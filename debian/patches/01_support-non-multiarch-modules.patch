@@ -1,4 +1,3 @@
-From 6376360bd33778c751d878a1c722fcaedbe69512 Mon Sep 17 00:00:00 2001
 From: Lionel Le Folgoc <lionel@lefolgoc.net>
 Date: Tue, 11 Oct 2011 21:30:17 +0200
 Subject: Look for plugins in {non-,}multiarch THUNARX_DIRECTORY
@@ -8,26 +7,27 @@ non-multiarch thunar (load plugins from both /usr/lib/$triplet and /usr/lib).
 
 Forwarded: not-needed
 ---
- thunarx/thunarx-provider-factory.c |   12 +++++++++++-
- thunarx/thunarx-provider-module.c  |    6 ++++++
- 2 files changed, 17 insertions(+), 1 deletions(-)
+ thunarx/thunarx-provider-factory.c | 14 ++++++++++++--
+ thunarx/thunarx-provider-module.c  |  6 ++++++
+ 2 files changed, 18 insertions(+), 2 deletions(-)
 
 diff --git a/thunarx/thunarx-provider-factory.c b/thunarx/thunarx-provider-factory.c
-index f2588eb..cbcf642 100644
+index 31b8835..1f0e478 100644
 --- a/thunarx/thunarx-provider-factory.c
 +++ b/thunarx/thunarx-provider-factory.c
 @@ -145,8 +145,17 @@ thunarx_provider_factory_load_modules (ThunarxProviderFactory *factory)
    GList                 *modules = NULL;
    GList                 *lp;
    GDir                  *dp;
+-
+-  dp = g_dir_open (THUNARX_DIRECTORY, 0, NULL);
 +  gsize                  i;
 +  const gchar           *thunarx_dirs[] =
 +                          {
 +                            THUNARX_DIRECTORY,
 +                            "/usr/lib/thunarx-2"
 +                          };
- 
--  dp = g_dir_open (THUNARX_DIRECTORY, 0, NULL);
++
 +  /* Search both multiarch and non-multiarch THUNARX_DIRECTORYs */
 +  for (i = 0; i < G_N_ELEMENTS (thunarx_dirs); ++i)
 +  {
@@ -44,7 +44,7 @@ index f2588eb..cbcf642 100644
    return modules;
  }
 diff --git a/thunarx/thunarx-provider-module.c b/thunarx/thunarx-provider-module.c
-index 4f96ffd..dbb693b 100644
+index 023ad2a..26ecc86 100644
 --- a/thunarx/thunarx-provider-module.c
 +++ b/thunarx/thunarx-provider-module.c
 @@ -178,6 +178,12 @@ thunarx_provider_module_load (GTypeModule *type_module)
@@ -60,6 +60,3 @@ index 4f96ffd..dbb693b 100644
    module->library = g_module_open (path, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
    g_free (path);
  
--- 
-1.7.7
-
