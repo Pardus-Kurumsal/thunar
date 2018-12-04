@@ -1,0 +1,41 @@
+From: =?utf-8?q?Yunusemre_=C5=9Eent=C3=BCrk?=
+ <yunusemre.senturk@pardus.org.tr>
+Date: Tue, 4 Dec 2018 14:19:07 +0300
+Subject: Fix deadlock when rapid file changes
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Yunusemre Şentürk <yunusemre.senturk@pardus.org.tr>
+---
+ thunar/thunar-file.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/thunar/thunar-file.c b/thunar/thunar-file.c
+index c7aae58..0c640cd 100644
+--- a/thunar/thunar-file.c
++++ b/thunar/thunar-file.c
+@@ -827,16 +827,16 @@ thunar_file_monitor (GFileMonitor     *monitor,
+           else
+               other_file = thunar_file_get (other_path, NULL);
+ 
+-          if (other_file == NULL)
+-              return;
++          if (other_file != NULL) {
+ 
+-          /* notify the thumbnail cache that we can now also move the thumbnail */
+-          thunar_file_move_thumbnail_cache_file (event_path, other_path);
++              /* notify the thumbnail cache that we can now also move the thumbnail */
++              thunar_file_move_thumbnail_cache_file (event_path, other_path);
+ 
+-          /* reload the containing target folder */
+-          thunar_file_reload_parent (other_file);
++              /* reload the containing target folder */
++              thunar_file_reload_parent (other_file);
+ 
+-          g_object_unref (other_file);
++              g_object_unref (other_file);
++          }
+ 
+           G_UNLOCK (file_rename_mutex);
+         }

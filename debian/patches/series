@@ -1,2 +1,3 @@
 01_support-non-multiarch-modules.patch
 0002-Update-Turkish-translation.patch
+0003-Fix-deadlock-when-rapid-file-changes.patch
