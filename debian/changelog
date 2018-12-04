@@ -1,3 +1,13 @@
+thunar (1.6.11-2pardus2) unstable; urgency=medium
+
+  [ Cihangir Akturk ]
+  * ci: change artifact location to /packages
+
+  [ Yunusemre Şentürk ]
+  * Add patches
+
+ -- Yunusemre Şentürk <yunusemre.senturk@pardus.org.tr>  Tue, 04 Dec 2018 14:22:42 +0300
+
 thunar (1.6.11-2pardus1) unstable; urgency=medium
 
   * Pardus CI implementation
